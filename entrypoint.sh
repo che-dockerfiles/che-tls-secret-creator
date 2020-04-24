@@ -98,12 +98,14 @@ openssl req --batch -new -sha256 -key $CHE_SERVER_KEY_FILE \
 #  -CA : CA certificate which should be used for signing the certificate request
 #  -CAkey : specifies CA private key to sign the certificate request with
 #  -CAcreateserial : generate and include certificate serial number
+#  -sha256 : hash to use
 #  -days : number of days this certificate will be valid for
 #  -extfile : config file which contains certificate extensions which should be included in the resulting certificate
 #  -outform : format of the certificate container
 #  -out : name of file to write generated certificate to
 openssl x509 -req -in $CHE_SERVER_CERT_REQUEST_FILE -CA $CHE_CA_CERT_FILE -CAkey $CHE_CA_KEY_FILE -CAcreateserial \
              -days 365 \
+             -sha256 \
              -extfile <(printf "subjectAltName=DNS:${DOMAIN},DNS:*.${DOMAIN}\nbasicConstraints=critical, CA:FALSE\nkeyUsage=digitalSignature, keyEncipherment, keyAgreement, dataEncipherment\nextendedKeyUsage=serverAuth") \
              -outform PEM -out $CHE_SERVER_CERT_FILE
 
