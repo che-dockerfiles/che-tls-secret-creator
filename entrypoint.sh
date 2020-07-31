@@ -27,7 +27,7 @@ CHE_CA_KEY_FILE='ca.key'
 CHE_CA_CERT_FILE='ca.crt'
 
 ECLIPSE_CHE='Eclipse Che'
-CHE_SERVER_ORG='Local Eclipse Che'
+CHE_SERVER_ORG='Eclipse Che Server'
 CHE_SERVER_KEY_FILE='domain.key'
 CHE_SERVER_CERT_REQUEST_FILE='domain.csr'
 CHE_SERVER_CERT_FILE='domain.crt'
