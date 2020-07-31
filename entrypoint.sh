@@ -26,7 +26,7 @@ CHE_CA_CN='Local Eclipse Che Signer'
 CHE_CA_KEY_FILE='ca.key'
 CHE_CA_CERT_FILE='ca.crt'
 
-ECLIPSE_CHE='Eclipse Che Server'
+ECLIPSE_CHE_SERVER='Eclipse Che Server'
 CHE_SERVER_ORG='Local Eclipse Che'
 CHE_SERVER_KEY_FILE='domain.key'
 CHE_SERVER_CERT_REQUEST_FILE='domain.csr'
@@ -87,7 +87,7 @@ openssl genrsa -out $CHE_SERVER_KEY_FILE 2048
 #  -outform : format of the certificate container
 #  -out : name of file to write generated certificate to
 openssl req --batch -new -sha256 -key $CHE_SERVER_KEY_FILE \
-            -subj "/O=${CHE_SERVER_ORG}/CN=${ECLIPSE_CHE}" \
+            -subj "/O=${CHE_SERVER_ORG}/CN=${ECLIPSE_CHE_SERVER}" \
             -reqexts SAN \
             -config <(cat $OPENSSL_CNF <(printf "\n[SAN]\nsubjectAltName=${DNS_ENTRIES}\nbasicConstraints=critical, CA:FALSE\nkeyUsage=digitalSignature, keyEncipherment, keyAgreement, dataEncipherment\nextendedKeyUsage=serverAuth")) \
             -outform PEM -out $CHE_SERVER_CERT_REQUEST_FILE
