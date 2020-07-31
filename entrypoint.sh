@@ -16,16 +16,17 @@
 # Examples:
 #   che.domain.net
 #   192.168.99.100.nip.io
-DOMAIN=${DOMAIN}
-if  [ -z "$DOMAIN" ]; then
+DOMAINS=${DOMAINS}
+if  [ -z "$DOMAINS" ]; then
     echo 'Error: "DOMAIN" environment variable is not set'
     exit 1
 fi
-
+DNS_ENTRIES=DNS:$(echo ${DOMAINS} | sed  's|,|,DNS:|g')
 CHE_CA_CN='Local Eclipse Che Signer'
 CHE_CA_KEY_FILE='ca.key'
 CHE_CA_CERT_FILE='ca.crt'
 
+ECLIPSE_CHE='Eclipse Che2'
 CHE_SERVER_ORG='Local Eclipse Che'
 CHE_SERVER_KEY_FILE='domain.key'
 CHE_SERVER_CERT_REQUEST_FILE='domain.csr'
@@ -86,9 +87,9 @@ openssl genrsa -out $CHE_SERVER_KEY_FILE 2048
 #  -outform : format of the certificate container
 #  -out : name of file to write generated certificate to
 openssl req --batch -new -sha256 -key $CHE_SERVER_KEY_FILE \
-            -subj "/O=${CHE_SERVER_ORG}/CN=${DOMAIN}" \
+            -subj "/O=${CHE_SERVER_ORG}/CN=${ECLIPSE_CHE}" \
             -reqexts SAN \
-            -config <(cat $OPENSSL_CNF <(printf "\n[SAN]\nsubjectAltName=DNS:${DOMAIN},DNS:*.${DOMAIN}\nbasicConstraints=critical, CA:FALSE\nkeyUsage=digitalSignature, keyEncipherment, keyAgreement, dataEncipherment\nextendedKeyUsage=serverAuth")) \
+            -config <(cat $OPENSSL_CNF <(printf "\n[SAN]\nsubjectAltName=${DNS_ENTRIES}\nbasicConstraints=critical, CA:FALSE\nkeyUsage=digitalSignature, keyEncipherment, keyAgreement, dataEncipherment\nextendedKeyUsage=serverAuth")) \
             -outform PEM -out $CHE_SERVER_CERT_REQUEST_FILE
 
 # Create certificate for the Che server domain based on given certificate request.
@@ -106,7 +107,7 @@ openssl req --batch -new -sha256 -key $CHE_SERVER_KEY_FILE \
 openssl x509 -req -in $CHE_SERVER_CERT_REQUEST_FILE -CA $CHE_CA_CERT_FILE -CAkey $CHE_CA_KEY_FILE -CAcreateserial \
              -days 365 \
              -sha256 \
-             -extfile <(printf "subjectAltName=DNS:${DOMAIN},DNS:*.${DOMAIN}\nbasicConstraints=critical, CA:FALSE\nkeyUsage=digitalSignature, keyEncipherment, keyAgreement, dataEncipherment\nextendedKeyUsage=serverAuth") \
+             -extfile <(printf "subjectAltName=${DNS_ENTRIES}\nbasicConstraints=critical, CA:FALSE\nkeyUsage=digitalSignature, keyEncipherment, keyAgreement, dataEncipherment\nextendedKeyUsage=serverAuth") \
              -outform PEM -out $CHE_SERVER_CERT_FILE
 
 # Check that required files have been created
