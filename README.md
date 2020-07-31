@@ -8,9 +8,7 @@ All parameters to this image is passed as environment variables.
 
 Required parameters:
 
- - `DOMAIN` should be set with the cluster public domain value.
-   This is needed to correctly fill in Subject Alternative Names of Che certificate.
-   Beside specified domain, wildcard is added to the domain, so, for example, for domain `test.net` resulting certificate will have SAN as `test.net, *.test.net`.
+ - `DOMAIN` should be set with the list of cluster public domains with or without wildcard.
 
 Optional parameters:
 
