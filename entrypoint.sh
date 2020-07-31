@@ -16,12 +16,12 @@
 # Examples:
 #   che.domain.net
 #   192.168.99.100.nip.io
-DOMAINS=${DOMAINS}
-if  [ -z "$DOMAINS" ]; then
+DOMAIN=${DOMAIN}
+if  [ -z "$DOMAIN" ]; then
     echo 'Error: "DOMAIN" environment variable is not set'
     exit 1
 fi
-DNS_ENTRIES=DNS:$(echo ${DOMAINS} | sed  's|,|,DNS:|g')
+DNS_ENTRIES=DNS:$(echo ${DOMAIN} | sed  's|,|,DNS:|g')
 CHE_CA_CN='Local Eclipse Che Signer'
 CHE_CA_KEY_FILE='ca.key'
 CHE_CA_CERT_FILE='ca.crt'
