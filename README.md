@@ -21,5 +21,7 @@ Optional parameters:
    This certificate should be shared with all users and each user should add it into OS or browser trust store.
    The namespace is defined by `CHE_NAMESPACE` environment variable.
    Default value is `self-signed-certificate`.
+ - `LABELS` is a space separated list of labels to add to the generated secret.
+   Could be empty.
 
 Image repository is `quay.io/eclipse/che-tls-secret-creator` and could be found [here](https://quay.io/repository/eclipse/che-tls-secret-creator).
