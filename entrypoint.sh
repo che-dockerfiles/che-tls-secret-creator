@@ -144,5 +144,21 @@ if [ $? -ne 0 ]; then
     exit 21
 fi
 
+# Label the resulting secrets.
+# It is used to have the secret cached in the operator client.
+if [ -n "$LABELS" ]; then
+    kubectl label secret "${CHE_SERVER_TLS_SECRET_NAME}" ${LABELS} --namespace=$CHE_NAMESPACE
+    if [ $? -ne 0 ]; then
+        echo "Error while labeling secret \"${CHE_SERVER_TLS_SECRET_NAME}\"."
+        exit 22
+    fi
+
+    kubectl label secret "${CHE_CA_CERTIFICATE_SECRET_NAME}" ${LABELS} --namespace=$CHE_NAMESPACE
+    if [ $? -ne 0 ]; then
+        echo "Error while labeling secret \"${CHE_CA_CERTIFICATE_SECRET_NAME}\"."
+        exit 23
+    fi
+fi
+
 # Log that everything is done
 echo 'Che TLS secrets are created.'
